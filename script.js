@@ -1,5 +1,82 @@
 //BlackJack
 
+
+/**************** VERSION 4 *********************/
+
+function Game() {
+	this.players = [
+		{
+			name: "Dealer",
+			cards: [],
+			total: 0
+		},
+		{
+			name: "Player 1",
+			cards: [],
+			total: 0
+		},
+		{
+			name: "Player 2",
+			cards: [],
+			total: 0
+		},
+		{
+			name: "Player 3",
+			cards: [],
+			total: 0
+		}
+	];
+
+	this.deck = [
+		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
+		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
+		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
+		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11]
+	];
+
+
+	this.deal = () => {
+		let self = this;
+		for(let i = 0; i < 2; i++) {
+			for(var player in self.players) {
+
+				let suit = Math.floor(Math.random() * (self.deck.length));
+				let card = Math.floor(Math.random() * (self.deck[suit].length));
+				self.players[player].cards.push(self.deck[suit][card]);
+				self.players[player].total += self.deck[suit][card];
+				self.deck[suit].splice(card, 1);
+			}
+		}
+	}
+
+	/*this.winner = () => {
+		let self = this;
+
+		for(var player in self.players) {
+
+			self.players[player].total = self.players[player].cards[0] + self.players[player].cards[1];
+			console.log(self.players[player].name, self.players[player].total);
+		}
+
+	}*/
+
+
+}
+
+game = new Game();
+game.deal();
+//game.winner();
+
+for(var player in game.players) {
+	console.log(game.players[player].name);
+	console.log(game.players[player].cards);
+	console.log(game.players[player].total);
+	// console.log('Total:', game.players[player].cards[0] + game.players[player].cards[1]);
+}
+
+/************** END VERSION 4 ******************/
+
+
 // function BlackJack() {
 
 // 	this.playerList = [ 'Dealer', 'Jack', 'Jill', 'John', 'Jane'];
@@ -93,47 +170,63 @@ ACES EVAL METHOD
 
 */
 
-let players = ['Dealer', 'Player One', 'Player Two', 'Player Three'];
-let cards = [
-	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
-	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
-	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
-	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11]
-];
+// let players = ['Dealer', 'Player One', 'Player Two', 'Player Three'];
+// let cards = [
+// 	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
+// 	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
+// 	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11], 
+// 	[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11]
+// ];
 
-let list = [];
-
-
-function blackjack(cards,playersArray) {
-
-	console.log('Playing a game of BlackJack with four players!');
-	setTimeout( function() {
-		console.log('Shuffling');
-	},1000);
-
-	setTimeout( function() {
-		for( let i = 0; i < cards.length; i++ ) {
-			let firstCard = cards[i][Math.floor(Math.random() * cards[i].length)];
-			let secondCard = cards[i][Math.floor(Math.random() * cards[i].length)];
-			let total = firstCard + secondCard;
-			list.push(total);
-			// console.log(list);
-			console.log(playersArray[i], firstCard,secondCard, total );
-		}
-	}, 2000);
-
-	setTimeout( function() {
-		console.log(players[list.indexOf(Math.max(...list))] + ' Wins!', 'Score ' + Math.max(...list));
-	}, 3500);
+// let list = [];
 
 
-}
+// function blackjack(cards,playersArray) {
+
+// 	console.log('Playing a game of BlackJack with four players!');
+// 	// setTimeout( function() {
+// 		console.log('Shuffling');
+// 	// },1000);
+
+// 	// setTimeout( function() {
+// 		for( let i = 0; i < cards.length; i++ ) {
+// 			let firstCard = cards[i][Math.floor(Math.random() * cards[i].length)];
+// 			let secondCard = cards[i][Math.floor(Math.random() * cards[i].length)];
+// 			let total = firstCard + secondCard;
+// 			list.push(total);
+// 			console.log(playersArray[i], firstCard,secondCard, total );
+// 		}
+// 	// }, 2000);
+
+// 		let bestHand = list.indexOf(Math.max(...list));
+// 		let secondBest = list.splice(list.indexOf(Math.max(...list)), 1);
+// 		let thirdBest = list.splice(list.indexOf(Math.max(...list)), 1);
+// 		let fourthBest = list.splice(list.indexOf(Math.max(...list)), 1);
+// 		console.log(bestHand, players[bestHand], secondBest, thirdBest, fourthBest);
+
+// 		 this.winner = (a, b, c, d) => {
+// 			if ( a <= 21 && a > b, c, d) {
+// 				console.log(players[bestHand]);
+// 			} else if ( a === b, c, d) {
+// 				console.log('tie', a);
+// 			}
+// 		}
+
+// 		console.log(winner(bestHand, secondBest, thirdBest, fourthBest));
+
+// 	// setTimeout( function() {
+// 	// 	console.log(players[list.indexOf(Math.max(...list))] + ' Wins!', 'Score ' + Math.max(...list));
+// 	// }, 3500);
 
 
-blackjack(cards, players);
+// }
 
 
+// blackjack(cards, players);
 
+
+// let a = [8,2,3,8]
+// console.log(a.indexOf(Math.max(...a)));
 
 
 
