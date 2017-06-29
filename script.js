@@ -63,6 +63,7 @@ function Game() {
 	* console.log( this.players[player].cards, this.players[player].total ); // [9, 6], 15 [2, 5], 7 [10, 11], 21 [4, 11] 15 
 	* Each random card value is assigned to this.players[player].total = this.players[player].total + this.deck[suit][card].
 	* After each random card selection, the value of that choice is removed from this.deck via splice(startIndex, deleteCount)
+	* Account for Ace - If this.players[player].total === 22 assign this.players[player]total === 12 
 	*/
 	this.deal = () => {
 		let self = this;
