@@ -45,7 +45,7 @@ class Game {
 	* @type {string[]} gameCards Make sure to empty the game cards array before setting a new deck for the current game
 	*/
 	setCards() {
-		this.gameCards = [];//remove any remaining cards
+		this.gameCards = [];
 		for(let obj in this.deck) {
 			this.gameCards.push(this.deck[obj]);
 		}
