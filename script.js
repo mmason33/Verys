@@ -126,6 +126,13 @@ class Game {
 	/**
 	* @function
 	* @name sumScore() Calulate the total score for each player's hand
+	* @example
+	* game.sumScore() // Dealer Hand: 3 of Clubs and King of Clubs => Score 13
+	*					 Player 1 Hand: Jack of Clubs and Ace of Spades => Score 21
+	*					 Player 2 Hand: Queen of Diamonds and 7 of Clubs => Score 17
+	*					 Player 3 Hand: 3 of Diamonds and 10 of Hearts => Score 13
+	*
+	* I chose to implement the console.log in this function to get all the data on one line. If I was changed the DOM I would have done this differently.
 	*/
 	sumScore(){
 	    for(let player in this.players){
@@ -150,7 +157,16 @@ class Game {
 		    }
 	    }
 	}
-
+	/**
+	* @function
+	* @name winner() Decide the winner based on each player's score
+	* @type {number} greatest The greatest score at that iteration
+	* @type {string} holder The player's name that holds the greatest score
+	* @type {number} tie The tying score value that is equal to the greatest score
+	* @type {string} tieHolder The name of the player with the tying score
+	* @example
+	* game.winner() // The winner is Player 3 with a score of 20!
+	*/
 	winner(){
 		let greatest = 0;
 		let holder = '';
