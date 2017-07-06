@@ -1,160 +1,127 @@
-//BlackJack
+class Game {
+	constructor() {
+		this.players = [];
 
-/**
-* @constructor Game();
-* Create Game
-*/
-function Game() {
-	/**
-	* @param {string[]} this.players players array
-	* Initialize players collection with the given properties
-	* I created two properties with the value of []
-	* One to record the numeric value of the hand, one to record the string value of a given face card.
-	* @example
-	* console.log(game.players[player].cardNameSuit); // [3, "Diamonds", "Jack", "Clubs"] [6, "Hearts", 6, "Clubs"] [8, "Hearts", 2, "Diamonds"] [5, "Hearts", 2, "Hearts"]
-	* console.log(game.players[player].cards); // [6, 7] [10, 4] [3, 2] [10, 11]
-	*/
-	this.players = [
-		{
-			name: "Dealer",
-			cards: [],
-			cardNameSuit: [],
-			total: 0
-		},
-		{
-			name: "Player 1",
-			cards: [],
-			cardNameSuit: [],
-			total: 0
-		},
-		{
-			name: "Player 2",
-			cards: [],
-			cardNameSuit: [],
-			total: 0
-		},
-		{
-			name: "Player 3",
-			cards: [],
-			cardNameSuit: [],
-			total: 0
+		this.deck = [
+			{
+				suit: 'Spades',
+				cards: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+			},
+			{
+				suit: 'Clubs',
+				cards: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+			},
+			{
+				suit: 'Hearts',
+				cards: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+			},
+			{
+				suit: 'Diamonds',
+				cards: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+			}
+		];
+
+		this.gameCards = [];
+	}
+
+	setCards() {
+		this.gameCards = [];//remove any remaining cards
+		for(let obj in this.deck) {
+			this.gameCards.push(this.deck[obj]);
 		}
-	];
-	/**
-	* @param {string[]} this.suitNames array of suit names
-	*/
-	this.suitNames = ['Spades', 'Clubs', 'Hearts', 'Diamonds'];
-	/**
-	* @param {string[]} this.deck array for the deck of cards
-	* Create deck of cards - an array containing four subarrays(suits).
-	*/
-	this.deck = [
-		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace'], 
-		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace'], 
-		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace'], 
-		[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
-	];
-	/**
-	* Deal - For each player in the players(collection/array), generate two random cards.
-	* @param {number} suit A random whole number between 1 & this.deck.length(4)
-	* @param {number} card A random whole number between 1 & this.deck[suit].length(13)
-	* @example
-	* game.deal();
-	* console.log( this.players[player].cards, this.players[player].total ); // [9, 6], 15 [2, 5], 7 [10, 11], 21 [4, 11] 15 
-	* Each random card value is assigned to this.players[player].total = this.players[player].total + this.deck[suit][card].
-	* After each random card selection, the value of that choice is removed from this.deck via splice(startIndex, deleteCount)
-	* Account for Ace - If this.players[player].total === 22 assign this.players[player]total === 12 
-	*/
-	this.deal = () => {
-		let self = this;
-		for( let i = 0; i < 2; i++ ) {
-			for ( var player in self.players ) {
-				let suit = Math.floor( Math.random() * (self.deck.length));
-				let card = Math.floor(Math.random() * (self.deck[suit].length));
-				self.players[player].cardNameSuit.push(self.deck[suit][card]);
-				switch (self.deck[suit][card]) {
-					case 'Ace': 
-						self.deck[suit][card] = 11;
-						break;
-					case 'King':
-					case 'Queen':
-					case 'Jack': 
-						self.deck[suit][card] = 10;
-						break;
-				}
-				self.players[player].cards.push(self.deck[suit][card]);
-				self.players[player].cardNameSuit.push(self.suitNames[suit]);
-				self.players[player].total += self.deck[suit][card];
-				self.deck[suit].splice(card, 1);				
-				if ( self.players[player].total === 22 ) {
-					self.players[player].total = 12;
-				}
+	}
+
+	getCard() {
+		let randomSuit = Math.floor(Math.random() * this.gameCards.length);
+		let randomCard = Math.floor(Math.random() * this.gameCards[randomSuit].cards.length);
+		let cards = this.gameCards[randomSuit];
+		let card = {
+			suit: cards.suit,
+			card: cards.cards[randomCard]
+		};
+		
+		cards.cards.splice(randomCard, 1);
+		return card;
+	}
+
+	deal(number) {
+		for(let i = 0; i < number; i++) {
+			for(let player in this.players) {
+				this.players[player].hand.push(this.getCard());
 			}
 		}
 	}
-	/**
-	*
-	* Winner - determine the winner based on the output of game.deal();
-	* @param {number} greatest The greatest sum of the dealt hands.
-	* @param {string} holder The name of the player with the greatest hand.
-	* @param {number} tie The value of the tying hand should there be a tie.
-	* @param {string} tieHolder The name of the player with the tying hand.
-	* @example
-	* game.winner();
-	* console.log(game.winner()); // The winner is Player 2 with a total of 20 || It's a tie between Player 1 and Dealer with a score of 21
-	*/
-	this.winner = () => {
-		let self = this;
+
+	addPlayer(array) {
+		for(let i = 0; i < array.length; i++){
+			this.players.push({name: array[i], hand: [], score: 0});
+		}
+	}
+
+	evalCard(card) {
+		switch(card) {
+			case 'Ace':
+				card = 11;
+				break;
+			case 'King':
+			case 'Queen':
+			case 'Jack':
+				card = 10;
+				break;
+		}
+		return card;
+	}
+	
+	sumScore(){
+	    for(let player in this.players){
+	    	for(let i = 0; i < this.players[player].hand.length; i++){
+		  	    this.players[player].score += this.evalCard(this.players[player].hand[i].card);
+			    this.players[player].score;
+				if(i === 1){
+					console.log(this.players[player].name, 'Hand:', 
+						this.players[player].hand[0].card, 'of', 
+						this.players[player].hand[0].suit, 'and', 
+						this.players[player].hand[1].card, 
+						'of', this.players[player].hand[1].suit,
+						'=> Score',
+						this.players[player].score
+					);
+				}
+		    }
+	    }
+	}
+
+	winner(){
 		let greatest = 0;
 		let holder = '';
 		let tie = 0;
 		let tieHolder = '';
-		for(var player in self.players) {
-			if(self.players[player].total > greatest) {
-				greatest = self.players[player].total;
-				holder = self.players[player].name;
-			} else if (self.players[player].total === greatest) {
-				tie = self.players[player].total;
-				tieHolder = self.players[player].name;
+		for ( let player in this.players) {
+			if( this.players[player].score > greatest && this.players[player].score < 22) {
+				greatest = this.players[player].score;
+				holder = this.players[player].name;
+			} else if ( this.players[player].score === greatest ) {
+				tie = this.players[player].score;
+				tieHolder = this.players[player].name;
 			}
 		}
-		if (tie === greatest) {
-			return "It's a tie between " + tieHolder + " and " + holder + " with a score of " + greatest;
+		if (tie === greatest){
+			console.log('It is a tie between ' + holder + ' and ' + tieHolder + ' with a score of ' + greatest);
 		} else {
-			return 'The winner is ' + holder + ' with a total of ' + greatest + '!';
+			console.log('The winner is ' + holder + ' with a score of ' + greatest + '!');
 		}
 	}
 
+}
 
-}
-/**
-* Create a new instance of Game();
-*/
-game = new Game();
-console.log('Playing a game of BlackJack with four players!');
-/**
-* Invoke the this.deal() method on the new Game() assigned to game.
-*/
-game.deal();
-/**
-* For each player in players(collection/array), console.log their name, current cards(hand) and they total sum of that hand.
-*/
-for(var player in game.players) {
-	console.log(game.players[player].name, 
-		'Hand:', 
-		game.players[player].cardNameSuit[0],
-		'of', 
-		game.players[player].cardNameSuit[1],
-		',', 
-		game.players[player].cardNameSuit[2],
-		'of', 
-		game.players[player].cardNameSuit[3],
-		'=>', 
-		'Total:', 
-		game.players[player].total
-	);
-}
-/**
-* Invoke the this.winner() method on the Game() to determine the winner & log the winner to the console.
-*/
-console.log(game.winner());
+var game = new Game();
+
+game.setCards();
+
+game.addPlayer(['Dealer','Player 1', 'Player 2', 'Player 3']);
+
+game.deal(2);
+
+game.sumScore();
+
+game.winner();
