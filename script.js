@@ -90,6 +90,11 @@ class Game {
 	/**
 	* @function
 	* @name deal() Deal a given number of cards to each player
+	* @param {number} number The number cards dealt to each player
+	* While {i} is less then the number of wanted cards, a random card is selected and pushed to each players hand
+	* @example
+	* game.deal(2)
+	* console.log(game.players[0].hand) // [Object, Object] => console.log(game.players[0].hand[0]) // {suit: 'Clubs', card: 7}
 	*/
 	deal(number) {
 		for(let i = 0; i < number; i++) {
@@ -98,7 +103,13 @@ class Game {
 			}
 		}
 	}
-
+	/**
+	* @function
+	* @name evalCard() Evaluate the facecards and return a numberic value to calculate the total score
+	* @param {string} card The given facecard in a player's hand should there be one present
+	* @example
+	* game.evalCard('Ace') // 11
+	*/
 	evalCard(card) {
 		switch(card) {
 			case 'Ace':
@@ -112,7 +123,10 @@ class Game {
 		}
 		return card;
 	}
-	
+	/**
+	* @function
+	* @name sumScore() Calulate the total score for each player's hand
+	*/
 	sumScore(){
 	    for(let player in this.players){
 	    	for(let i = 0; i < this.players[player].hand.length; i++){
@@ -142,11 +156,11 @@ class Game {
 		let holder = '';
 		let tie = 0;
 		let tieHolder = '';
-		for ( let player in this.players) {
-			if( this.players[player].score > greatest && this.players[player].score < 22) {
+		for (let player in this.players) {
+			if(this.players[player].score > greatest) {
 				greatest = this.players[player].score;
 				holder = this.players[player].name;
-			} else if ( this.players[player].score === greatest ) {
+			} else if (this.players[player].score === greatest) {
 				tie = this.players[player].score;
 				tieHolder = this.players[player].name;
 			}
@@ -160,7 +174,7 @@ class Game {
 
 }
 
-var game = new Game();
+const game = new Game();
 
 game.setCards();
 
