@@ -189,9 +189,13 @@ class Game {
 	}
 
 }
-
+/**
+* Create a new instance of Game()
+*/
 const game = new Game();
-
+/**
+* Invoke all of the methods available to Game()
+*/
 game.setCards();
 
 game.addPlayer(['Dealer','Player 1', 'Player 2', 'Player 3']);
